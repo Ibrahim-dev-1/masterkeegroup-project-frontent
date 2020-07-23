@@ -8,3 +8,20 @@ body{
     font-size: 1rem;
     line-height: 1.4rem;
 }
+a{
+    color: black;
+}
+
+
+.kratosLink{
+    padding-right:2rem; 
+    font-weight: bold;
+    font-size: 1.3rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.kratosLink:hover{
+    color: green;
+    text-shadow: 0px 5px 10px rgb(7, 219, 149);
+    transform: scaleX(23px) ;
+}

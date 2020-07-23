@@ -30,7 +30,7 @@ const Dashboard = (prop) =>{
                     </section>
                     <section className="col-md-7"> 
                        <Route exact path="/dashboard/" component={FilesContents} />
-                       <Route exact path="/dashboard/:foldName" component={FileInfo} />
+                       <Route  exact path="/dashboard/:foldName" component={FileInfo} />
                     </section>
                     <section className="col-md-3 text-center"> 
                         <h3 className="font-weight-bold">Ajouter un Fichier</h3>

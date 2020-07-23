@@ -1,31 +1,37 @@
 import React from 'react';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const FilesContents = () => {
     const [errors, setError ] = React.useState([]);
     const [loading, setLoading ] = React.useState(false);
     const [folders, setFolders] = React.useState([]);
-    const fetchData = async () => {
-       try {
-           setLoading(true);
-            const result = await fetch("http://localhost:9001/dossier/",{
+    
+console.log(errors)
+    const fetchData = () => {
+            setLoading(true);
+            fetch("/dossier/",{
                 method: "GET",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+ sessionStorage.getItem("token")
                 }
+            }).then(function(result){
+                return result.json();
             })
-
-            const data = await result.json();
-            setTimeout(function(){setLoading(false);}, 1000);
-            setError([]);
-            console.log(errors);
-            return setFolders(data.folders);
-       } catch (error) {
-           console.log(error);
-           setLoading(false);
-           return setError(error);
-       }
+            .then(function(data){
+                setTimeout(function(){setLoading(false);}, 1000);
+                if(data.errors)
+                    throw new Error(data.message); 
+                
+                return setFolders(data.folders);
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading(false);
+                return setError(error);
+            })
     }
+
     React.useEffect(function(){
         fetchData();
     },[])
@@ -35,7 +41,7 @@ const FilesContents = () => {
             <h3 className="font-weight-bold">Tous les fichiers </h3>
             {loading ? (<h3>loading....</h3>):(
                 <div className="d-flex flex-wrap justify-content-between">
-                    {folders.length > 0 ? folders.map(function(fold){
+                    { folders.length > 0 ? folders.map(function(fold){
                     return <div key={fold.nom} style={{ width:"48%"}} className="border rounded p-2 mb-2" >
                                 <img className="img-circle" alt="img" />
                                 <hr/>
