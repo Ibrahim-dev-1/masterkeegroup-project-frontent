@@ -4,11 +4,10 @@ import FilesContents from '../views/FilesContents';
 import FileInfo from '../views/FileInfo';
 import Profil from '../assets/img/profil.jpg'
 import UploadModal from '../component/UploadModal';
-import {Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 const Dashboard = (prop) =>{
-    
-    return (
+    return ( 
         <div> 
             <UploadModal />                       
             <Navbar />

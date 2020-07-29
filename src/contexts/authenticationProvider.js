@@ -1,4 +1,5 @@
 import React , { createContext , useReducer } from 'react';
+import { createNotification } from '../myFonctions';
 
 let AuthStateContext = createContext();
 let AuthDispatchContext = createContext();
@@ -9,9 +10,6 @@ const rootReducer = (state, action ) => {
     switch(action.type){
         case "LOGIN_SUCCESS":
             return {...state, isAuthentication: action.payload.success, token : action.payload.token };
-        case "LOGIN_FAILURE":
-            console.log("Erreur : " + action.payload)
-            return {error: true, message: action.payload, isAuthentication: false };
         default:
             return state;
     }
@@ -23,7 +21,9 @@ const AuthenticationProvider = (props) => {
     const [authState, dispatch ] = useReducer(rootReducer, {
         isAuthentication: false,
         token: undefined,
+        isLoading: false,
     });
+
     return (
         <AuthStateContext.Provider value={authState} >
             <AuthDispatchContext.Provider value={dispatch} >
@@ -54,7 +54,7 @@ const useAuthDispatch = () => {
     return dispatch;
 }
 
-const login = (dispatch , AuthData, setErrors) => {
+const login = (dispatch , AuthData) => {
     fetch("/",{
         method: "POST",
         body: JSON.stringify(AuthData),
@@ -65,29 +65,25 @@ const login = (dispatch , AuthData, setErrors) => {
         return response.json();
     }).then(function(data){
         if(data.errors){
-            setErrors([data.errors.message]);
             sessionStorage.removeItem("isAuthentication");
             sessionStorage.removeItem("token");
-            return dispatch({ type: "LOGIN_FAILURE", payload: data.message });
+            throw data.message;
         }
 
         // si les informations sont correctes, alors 
-        setErrors([])
         sessionStorage.setItem("isAuthentication", true);
         sessionStorage.setItem("token", data.token);
         return dispatch({ type: "LOGIN_SUCCESS" , payload: data })
     }).catch(function(err){
         sessionStorage.removeItem("isAuthentication");
         sessionStorage.removeItem("token");
-        setErrors([err.message]);
-        return console.log(err);
+        return createNotification("Erreur", "danger", err, "top-right");
     })
 }
 
-
 export {
     AuthenticationProvider,
-    login ,
+    login,
     useAuthState,
     useAuthDispatch,
 }

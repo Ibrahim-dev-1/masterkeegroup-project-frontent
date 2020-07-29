@@ -1,17 +1,19 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
-import { useAuthState } from '../contexts/authenticationProvider';
+import { useParams } from 'react-router-dom';
+import SendFileModal from '../component/sendFileModal'
+import '../loading.css';
 
 const FileInfo = (props) => {
     const [files, setFiles] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [errors, setErrors] = React.useState([]);
-    const context = useAuthState();
+    const [ tabFichiers , setTabFichier ] = React.useState([]);
+    const {foldName} = useParams();
+
 
     const fetchDatas = () => {
-        console.log(props.match.params.foldName )
             setLoading(true);
-            return fetch("/dossier/" + props.match.params.foldName,{
+            return fetch("/dossier/" + foldName,{
                 method: "GET",
                 headers:{'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + sessionStorage.getItem("token") }
             })
@@ -19,7 +21,7 @@ const FileInfo = (props) => {
                 return result.json();
             })
             .then(function(data){
-                setTimeout(function(){setLoading(false)}, 1000)
+                setTimeout(function(){setLoading(false)}, 2000)
                 return setFiles(data);
             })
             .catch(function(error){
@@ -29,18 +31,52 @@ const FileInfo = (props) => {
             });
     }
 
+    const handleSendClick = () => {
+        if(!tabFichiers.length)
+            return console.log("Veuillez cochez une case ");
+        let button = document.createElement("button");
+        button.setAttribute("data-toggle", "modal");
+        button.setAttribute("data-target","#sendModal");
+        document.getElementById("root").append(button);
+        button.click();
+        
+        return button.remove();
+    }
+    const handlePublicClick = () => {
+        if(!tabFichiers.length)
+            return console.log("Veuillez cochez les fichiers que vous voulez rendre publics ");
+    }
+
+   
     React.useEffect(function(){
         fetchDatas();        
-    },[]);
+    },[FileInfo]);
 
     return (
         <React.Fragment>
-           {loading ? (<h3 className="text-success">loading...</h3>):(
+            <SendFileModal setFiles={setFiles}  files={tabFichiers} />
+            {loading ? (<div className="d-flex justify-content-center align-items-center">
+            <div className="lds-dual-ring"></div>
+            </div>):(
             <div className="container">
                 <h3 className="text-center font-wieght-bold mb-3"> La listes des fichiers </h3>
                 <div className="mb-3 border d-flex flex-wrap justify-content-around rounded p-2">
-                    <button className="btn btn-success"> Envoyé à une adresse </button>
-                    <button className="btn btn-outline-info">Somethings else</button>
+                    <button 
+                        onClick={handleSendClick} 
+                        className="btn btn-success"
+                    > Envoyé à une adresse </button>
+                    <button data-toggle="collapse" data-target="#infoFichiersEnvoyé" id="info" > </button>
+                    <button onClick={handlePublicClick} className="btn btn-outline-info">Rendre public </button>
+                </div>
+                <div className="collapse border bg-light" id="infoFichiersEnvoyé">
+                <div className="p-4">
+                    pas d'info pour le moments
+                    lkvd,ljvjdsvd
+
+                    dsvds
+                    vsdvsv
+                </div>
+                
                 </div>
                 <table style={{width:"100%" , margin: "0px auto"}} className=" text-center table table-bordered table-responsive table-hover">
                 <thead>
@@ -57,7 +93,18 @@ const FileInfo = (props) => {
                     {files.length > 0 ? files.map(function(file){
                         return <tr key={file.nom}>
                                     <td>
-                                        <input onClick={function(){ console.log("click sur " + file.nom )}} className="" type="checkbox" />
+                                        <input 
+                                            onChange={function(ev){
+                                                if(!ev.target.checked){
+                                                    console.log(file);
+                                                    return setTabFichier(tabFichiers.filter(function(element){
+                                                        return element.nom !== file.nom ;
+                                                    }))
+                                                }
+                                                return setTabFichier([...tabFichiers, file ]);
+                                            }}
+                                            
+                                            type="checkbox" />
                                     </td>
                                     <td className="font-weight-bold text-primary"> {file.nom} </td>
                                     <td>{file.taille}</td>

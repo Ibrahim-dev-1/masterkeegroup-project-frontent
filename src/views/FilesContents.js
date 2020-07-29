@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../loading.css';
 
 const FilesContents = () => {
     const [errors, setError ] = React.useState([]);
     const [loading, setLoading ] = React.useState(false);
     const [folders, setFolders] = React.useState([]);
-    
-console.log(errors)
+    console.log(errors)
     const fetchData = () => {
-            setLoading(true);
+            setLoading(true)
             fetch("/dossier/",{
                 method: "GET",
                 headers: {
@@ -19,7 +19,7 @@ console.log(errors)
                 return result.json();
             })
             .then(function(data){
-                setTimeout(function(){setLoading(false);}, 1000);
+                setTimeout(function(){setLoading(false);}, 2000);
                 if(data.errors)
                     throw new Error(data.message); 
                 
@@ -39,12 +39,10 @@ console.log(errors)
     return (
         <React.Fragment>
             <h3 className="font-weight-bold">Tous les fichiers </h3>
-            {loading ? (<h3>loading....</h3>):(
+            {loading ? (<div className="d-flex justify-content-center align-items-center"><div className="lds-dual-ring"></div></div>):(
                 <div className="d-flex flex-wrap justify-content-between">
                     { folders.length > 0 ? folders.map(function(fold){
                     return <div key={fold.nom} style={{ width:"48%"}} className="border rounded p-2 mb-2" >
-                                <img className="img-circle" alt="img" />
-                                <hr/>
                                 <h3 className="text-primary text-center">{fold.nom}</h3>
                                 <p className="text-muted">Dossier {fold.nom} contenant tous les fichiers du type {fold.type} </p>
                                 <div className="d-flex justify-content-between align-items-center flex-wrap">

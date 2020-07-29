@@ -24,7 +24,7 @@ const handleInit = () => {
 }
 
 return (
-    <div className="modal fade" data-keyboard="true" data-backdrop="static" id="kratosModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div className="modal fade" data-show="false" data-keyboard="true" data-backdrop="static" id="kratosModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
         <div className="modal-header">
@@ -41,10 +41,19 @@ return (
                     allowMultiple={true}
                     maxFiles={3}
                     name="myFiles"
-                    server = "/upload"
+                    server = {{
+                       process:{
+                           url: '/upload',
+                           method: 'POST',
+                           headers:{ 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+                       }
+
+                    }}
+
                     oninit={() => handleInit()}
-                    // onupdatefiles={fileItems => {
-                    // }}
+                    onupdatefiles={fileItems => {
+                        console.log("update...")
+                    }}
                 />
             </form>
         </div>

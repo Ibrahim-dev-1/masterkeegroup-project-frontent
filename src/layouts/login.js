@@ -1,27 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthDispatch , login } from '../contexts/authenticationProvider';
+import Notification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css'
+import "animate.css";
 
 const Login = ()  =>{   
-    const [ errors , setErrors ] = React.useState([]);
     const [ datas , setData ] = React.useState({ email: '', password: '' });
-
     let dispatch = useAuthDispatch();
     
     const onClickHandler = (ev) => {
         ev.preventDefault();
-        return login(dispatch , datas, setErrors);
+        return login(dispatch , datas );
     }
  
     return (
         <div style={{ padding: "3rem", width: "100vw" , height:"100vh" , background: "black"}}>
+            <Notification />
+            
             <div  style={{ margin: "0 auto" }} className="login-box">
             <div className="login-logo">
                 <Link to=""><b>Admin</b> cloud </Link>
             </div>
             <div className="card">
                 <div className="card-body login-card-body">
-                    { errors.length > 0 && errors.map(function(er){ return  <p key={Math.random() * 1000 } className="text-danger">{er}</p> }) }
                     <p className="login-box-msg">Connectez-vous pour commencer</p>
 
                     <form onSubmit={onClickHandler}>
