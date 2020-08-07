@@ -25,11 +25,12 @@ const FileInfo = (props) => {
                 return setFiles(data);
             })
             .catch(function(error){
-                console.log(error);
-                console.log(errors);
                 return setLoading(false);
             });
     }
+    React.useEffect(function(){  
+        fetchDatas();        
+    },[]);
 
     const handleSendClick = () => {
         if(!tabFichiers.length)
@@ -44,17 +45,13 @@ const FileInfo = (props) => {
     }
     const handlePublicClick = () => {
         if(!tabFichiers.length)
-            return console.log("Veuillez cochez les fichiers que vous voulez rendre publics ");
+        return console.log("Veuillez cochez les fichiers que vous voulez rendre publics ");
     }
-
-   
-    React.useEffect(function(){
-        fetchDatas();        
-    },[FileInfo]);
+    
 
     return (
         <React.Fragment>
-            <SendFileModal setFiles={setFiles}  files={tabFichiers} />
+            <SendFileModal setFiles={setFiles} foldName={foldName} files={tabFichiers} />
             {loading ? (<div className="d-flex justify-content-center align-items-center">
             <div className="lds-dual-ring"></div>
             </div>):(
@@ -95,10 +92,11 @@ const FileInfo = (props) => {
                                     <td>
                                         <input 
                                             onChange={function(ev){
+                                                console.log(file);
                                                 if(!ev.target.checked){
                                                     console.log(file);
                                                     return setTabFichier(tabFichiers.filter(function(element){
-                                                        return element.nom !== file.nom ;
+                                                        return element !== file ;
                                                     }))
                                                 }
                                                 return setTabFichier([...tabFichiers, file ]);

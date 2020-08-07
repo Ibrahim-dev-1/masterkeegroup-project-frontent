@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../loading.css';
+import Notification from 'react-notifications-component';
+
 
 const FilesContents = () => {
     const [errors, setError ] = React.useState([]);
@@ -38,6 +40,8 @@ const FilesContents = () => {
 
     return (
         <React.Fragment>
+            
+            <Notification />
             <h3 className="font-weight-bold">Tous les fichiers </h3>
             {loading ? (<div className="d-flex justify-content-center align-items-center"><div className="lds-dual-ring"></div></div>):(
                 <div className="d-flex flex-wrap justify-content-between">

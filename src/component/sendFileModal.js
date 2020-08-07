@@ -1,25 +1,76 @@
 import React from 'react';
+import '../loading.css';
 
 
 const SendFileModal = (props) => {
   // console.log(props.files)
   const [emails, setEmails ] = React.useState([]);
   const [newEmail, setNewEmail ] = React.useState('');
+  const [isLoading , setLoading]  = React.useState(false);
   
+  
+  const saveSend = () =>{
+      fetch('/newLink', {
+       method: "POST",
+        body: JSON.stringify({
+          files: props.files,
+          emails: emails,
+          type: props.foldName
+        }),
+        headers: {'Content-Type': 'Application/json', 'Authorization':'Bearer ' + sessionStorage.getItem("token")}
+      }).then(function(response){
+          return response.json();
+      }).then(function(data){
+          if(data.errors)
+            throw data.message;
+          console.log(data)
+          return sendThrowEmail(data.id);
+      }).catch(function(err){
+          return console.log(err);
+      })
+    } 
+    
+    const sendThrowEmail = function(linkId){
+      setLoading(true);
+      setTimeout(function(){
+       fetch("/email/sendMails", {
+           method: "POST",
+           body:JSON.stringify({
+              url: `http://localhost:3000/mastercloud/files/private/${linkId}` ,
+              emails: emails
+           }),
+           headers: { 
+             'Content-Type': 'Application/json', 
+             'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+            }
+         }).then(function(response){
+            return response.json();
+         }).then(function(data){
+          if(data.errors){ throw data.message}
+          
+          setEmails([]);
+          setNewEmail('');
+          setLoading(false);
+          return console.log("L'email à été envoyé" );
+        }).catch(function(errors){
+          setLoading(false);
+          return console.log(errors);
+        })
+      }, 4000)
+
+  }
   const handleClick = () => {
     if(emails.length > 0 && props.files.length > 0 ){
-        const xmlRequest = new XMLHttpRequest();
-        xmlRequest.
-        const form = new FormData();
-        form.append({files: props.files, emails: emails });
+    
+     return saveSend();
 
-        return form.
-    }
+   }
 
     return console.log("la listes des emails ou la listes des files sont vides")
   }
 
     return <div  style={{ overflowY: "scroll", height:"400px"}} data-keyboard="true" data-backdrop="static" className="modal fade" id="sendModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {isLoading && <div className="d-flex justify-content-center align-items-center"><div className="lds-dual-ring"></div></div>}
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">
         <div className="modal-header">
@@ -78,8 +129,8 @@ const SendFileModal = (props) => {
                       <div className="collapse" id="emailCollapse">
                         <div className="container mt-3" >
                           <div className="input-group">
-                            <input type="email" value={newEmail} onChange={function(ev){  return setNewEmail(ev.target.value)}} className="bg-light border form-control" placeholder="coolkratos1@gmail.com" />
-                            <button type="button" onClick={function(ev){ if(newEmail !== ""){ setNewEmail(''); return setEmails([...emails,newEmail])} }} className="btn-success btn-sm" >Ok</button>
+                            <input type="email" require="true" value={newEmail} onChange={function(ev){  return setNewEmail(ev.target.value)}} className="bg-light border form-control" placeholder="coolkratos1@gmail.com" />
+                            <button type="submit" onClick={function(ev){ if(newEmail !== ""){ setNewEmail(''); return setEmails([...emails,newEmail])}}} className="btn-success btn-sm" >Ok</button>
                           </div>
                         </div>
                         
@@ -89,7 +140,7 @@ const SendFileModal = (props) => {
           </div>
         </div>
         <div className="modal-footer">
-          <button type="button" className="btn btn-danger" data-dismiss="modal">Fermé</button>
+          <button type="button" id="closeSendFileModale" className="btn btn-danger" data-dismiss="modal">Fermé</button>
           <button type="button" onClick={ handleClick } className="btn btn-outline-success">Envoyés</button>
         </div>
       </div>
