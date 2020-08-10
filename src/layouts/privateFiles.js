@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import ImageInfo from '../component/ImageInfo';
 import VideoInfo from '../component/VideoInfo';
 
-const PrivateFiles = () => {
+const PrivateFiles = (props) => {
     const linkId = useParams();
     const [link, setLink] = React.useState({files:[]});
     
-    const  findLinkId = ()=> {
+    const  findLinkId = (props) => {
         fetch('/newLink/info/'+ linkId.url,{
             method: "GET",
             headers: {
@@ -18,7 +18,6 @@ const PrivateFiles = () => {
         }).then(function(data){
             if(data.errors)
                 throw data.message
-           console.log(data);
             return setLink(data.link);
         }).catch(function(err){
             return console.log(err)
@@ -34,7 +33,7 @@ const PrivateFiles = () => {
             if(link.type === "images"){
                 return <ImageInfo files={link.files } />;
             }
-            if(link.type === "videos"){
+            if(link.type === "Videos"){
                 return <VideoInfo files={link.files} />;
             }
             if(link.type === "musics"){

@@ -8,10 +8,9 @@ const ImageInfo = (props) => {
     const handleClick = (ev) => {
         setCurrent({nom: ev.target.name});
         const xhr = new XMLHttpRequest();
-        xhr.setRequestHeader('Content-Type','Application/json');
         xhr.open("POST", "/newLink/readFile/", true );
         xhr.responseType = "arraybuffer";
-
+        
         xhr.onreadystatechange = function(ev){
             if(xhr.readyState === 4){
                 // create blob file xhr.response which came from server
@@ -23,6 +22,7 @@ const ImageInfo = (props) => {
                 setSource(url);
             }
         }
+        xhr.setRequestHeader('Content-Type','Application/json');
         // send informations
         xhr.send(JSON.stringify({ foldName: ev.target.name , filePath: ev.target.id }));
 
@@ -31,8 +31,8 @@ const ImageInfo = (props) => {
    
     return <div className="d-flex flex-column justify-content-center align-items-center">
         <h5 className="font-weight-bold display-5">{currentFile.nom}</h5>
-        <div style={{ margin: "1rem auto"}}>
-            <img id="myImage" src={source} alt="image" />
+        <div style={{ margin: "1rem auto" }}>
+            <img id="myImage" src={source} width= "800" height="400" alt="myImage" />
         </div>
         <div className="d-flex justify-content-around">
             {props.files.map(function(file){
