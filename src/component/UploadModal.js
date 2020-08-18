@@ -16,7 +16,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 
-export default function(prop) {
+export default function(props) {
     const filesPondRef = React.createRef();
 
 const handleInit = () => {
@@ -29,8 +29,8 @@ return (
         <div className="modal-content">
         <div className="modal-header">
             <h4 className="modal-title text-center text-primary" style={{ maring: "0px auto"}} id="exampleModalCenterTitle">Uploadé</h4>
-            <button type="button" id="myCloseButton" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <button type="button" id="myCloseButton" className="close"  data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div className="modal-body">

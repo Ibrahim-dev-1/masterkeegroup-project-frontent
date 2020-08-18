@@ -24,15 +24,16 @@ export default function(prop) {
 
 return (
     
-        <div className="kratos-upload-background">
-            <h3 className="display-5 text-center text-light">Bienvenu à <span className="display-4 text-warning">Masterkee <span style={{color:"#b3f9fc"}} className="display-4">Cloud </span></span></h3>
-            <div className="d-flex justify-content-between">
+    <div className="d-flex">
                 <div className="kratos-upload-first">
-                    <h5>Envoyé tous vos fichiers de façons rapide graçe à cette plateform de transfert de fichiers masterkee cloud</h5>
-                    <h5>Vous pouvez envoyé de fichiers pesant plus de 10 Gb via cette plateform.</h5>
+                    <h3 className="display-5 text-center text-light">Bienvenu à <span className="display-4 text-warning">Masterkee <span style={{color:"#b3f9fc"}} className="display-4">Cloud </span></span></h3>
+                    <div className="kratosText">
+                        <h5>Envoyé tous vos fichiers de façons rapide graçe à cette plateform de transfert de fichiers masterkee cloud</h5>
+                        <h5>Vous pouvez envoyé de fichiers pesant plus de 10 Gb via cette plateform.</h5>
+                    </div>
                 </div>
                 <div className="kratos-form-container">
-                    <h3 className="text-warning text-center"> Uploadé un fichiers</h3>
+                    <h3 className="text-primary text-center"> Uploadé un fichiers</h3>
                     <form className="kratos-form" id="kratosFile" encType="multipart/form-data">
                         {/* Pass FilePond properties as attributes */}
                         <FilePond
@@ -54,5 +55,4 @@ return (
                     </form>
                 </div>
             </div>
-        </div>
 )}

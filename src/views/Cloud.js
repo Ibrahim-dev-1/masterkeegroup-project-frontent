@@ -1,119 +1,51 @@
-import React from "react";
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import Navbar from "../component/Navbar";
-import Footer from "../component/Footer";
-import UploadModal from "../component/UploadModal";
-// import { Link } from 'react-router-dom';
-import kratosLoader from '../assets/img/kratosLoading.gif';
+import Navbar from '../component/Navbar';
+import UploadModal from '../component/UploadModal';
+import FilesContents from './FilesContents';
+import FileInfo from './FileInfo';
+import './Cloud.css';
+import Profil from '../assets/img/profil.jpg';
 
-export default function(prop) {
-const [files , setFiles ] = React.useState([])
-const [loading, isLoading] = React.useState(true);
+function Cloud(props) {
 
 
-const fetchData = () => {
-      if(loading){
-      fetch('http://localhost:9001/files', {
-            method: "GET",
-            headers: {
-                  "Content-Type":"application/json"
-            }
-      }).then(response => {return response.json()})
-      .then(datas => {
-            setFiles(datas)
-      })
-      .catch(err => console.log(err) )
-      setTimeout(function(){
-            isLoading(false)
-      } , 2000)
-}
-}
+      return <div>
+            <UploadModal />
+            <Navbar />
+            <div className="p-5">
+                  <div className="text-center mb-5">
+                        <h3 className="font-weight-bold display-3">Master <span className="text-danger">Cloud</span> </h3>
+                        <h5 className="text-muted">Administrez et uploadez tous vos différents fichiers avec master cloud. </h5>
+                        <h5 className="text-muted">Master cloud, est un espace de stockage capable de stocker des ficniers de taille très elever  </h5>
+                  </div>
 
-const handleDownloadBtnClick = (ev) =>{
-      // get file path
-      const filePath = ev.target.value;
-      // create blob
-      const blob = new Blob([filePath], {type: "multipart/form-data"});
-      console.log(blob);
-      // create link tag
-      const a = document.createElement("a");
-      const url = window.URL.createObjectURL(blob);
-      console.log(url);
-      a.href = url;
-      a.download = url
-      a.click();
-      a.remove();
-
-      document.onfocus = (ev) =>{
-            console.log(ev)
-            return window.URL.revokeObjectURL(blob)
-      }
-}
-
-React.useEffect( function() {
-    isLoading(true);
-},[])
-
-return (
-<div>{fetchData()}
-      <UploadModal isLoading={isLoading} />
-      <Navbar />
-      <div className="container mt-5">
-                  <h2 className="display-4 text-center p-3 font-weight-bold">
-                        Listes des fichiers du cloud
-                  </h2>
-      <div className="row">
-            <div className="col-md-10 mt-3">
-                        <h2 className="font-weight-bold bg-info border text-center">
-                            Fichiers  
-                        </h2>
-     
-{loading ? ( <div className="text-center"><img width="40" height="40" alt="cool" src={kratosLoader} /></div>): (<table className="table m-none bg-white table-hover">
-                        <thead>
-                              <tr>
-                                    <th className="text-danger" scope="col"># ID</th>
-                                    <th className="text-info" scope="col">Nom</th>
-                                    <th scope="col">Taille</th>
-                                    <th scope="col">date</th>
-                                    <th className="text-success" scope="col">Action</th>
-                              </tr>
-                        </thead>
-                        <tbody>
-                              { files.length ? files.map(file =>{
-                              return (
-                                    <tr key={file.id}>
-                                          <td>{file.id}</td>
-                                          <td className="font-weight-bold text-info">{file.name}</td>
-                                          <td className="font-weight-bold">{file.size} Mo</td>
-                                          <td className="text-muted">{file.birthtime}</td>
-                                          <td className="text-success">
-                                          {/* <Link id="downloadURL" to="#" hidden></Link> */}
-                                          <button 
-                                                onClick={handleDownloadBtnClick} 
-                                                className="btn btn-outline-success"
-                                                value={file.chemin}
-                                          >Télécharger</button></td>
-                                          
-                                    </tr>
-                                    )
-                              }):(<tr><td>Fichier vide</td></tr>)}
-                        </tbody>
-                  </table>)}
-            </div>
-            <div className="col-md-2 mt-3 ">
-                  <div className="border d-flex flex-column align-items-center p-3" style={{background: "#fff"}}>
-                        <h3 className="text-success font-weight-bold">Uploads</h3>
-                        <p className="text-muted">Envoyez tous vos fichiers à travers cet cloud</p>
-                        <p>Cet cloud vous permet d'envoyé n'importe qu'elle taille de fichiers</p>
-                        <button 
-                              data-toggle="modal"
-                              data-target="#kratosModal"
-                              className="btn btn-success" >Envoyé un fichier</button>
+                  <div className="row">
+                        <div className="col-md-3 text-center">
+                              <img className="img-circle" height="20px" width="20px" src={Profil} />
+                              <h4 className="font-weight-bold">{sessionStorage.getItem("email")}</h4>
+                        </div>
+                        <div className="col-md-6 p-2">
+                              <Switch>
+                                    <Route exact path="/dashboard/admin/cloud" component={FilesContents} />
+                                    <Route path="/dashboard/admin/cloud/:foldName" component={FileInfo} />
+                              </Switch>
+                        </div>
+                        <div style={{ maxHeight: "5rem" }} className="border rounded p-3 col-md-3 text-center">
+                              <h4 className="font-weight-bold text-center">Uploadez les Fichiers</h4>
+                              <p className="text-muted">Vous pouvez uploadez plusieurs types de fichiers(
+                        <span className="text-primary">les musiques , images, les videos , les pdf etc...</span>)
+                                                                                                                                                                                                      avec cette plateforme.
+                        </p>
+                              <p className="font-weight-bold">Comment uploadez ? cliquez sur le boutton upload un fichier </p>
+                              <button data-target="#kratosModal"
+                                    data-toggle="modal"
+                                    className="kratos-upload-button">uploadez un fichier </button>
+                        </div>
                   </div>
             </div>
-            
       </div>
-      </div>
-          <Footer />
-</div>
-)}
+}
+
+export default Cloud;

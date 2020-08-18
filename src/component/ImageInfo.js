@@ -30,11 +30,11 @@ const ImageInfo = (props) => {
 
    
     return <div className="d-flex flex-column justify-content-center align-items-center">
-        <h5 className="font-weight-bold display-5">{currentFile.nom}</h5>
-        <div style={{ margin: "1rem auto" }}>
+        { source !== undefined && <div style={{ margin: "1rem auto" }}>
             <img id="myImage" src={source} width= "800" height="400" alt="myImage" />
-        </div>
-        <div className="d-flex justify-content-around">
+            <h5 className="font-weight-bold text-primary display-5">{currentFile.nom}</h5>
+        </div>}
+        <div className="d-flex justify-content-around mt-3">
             {props.files.map(function(file){
                 return <div key={file.nom} className="card mr-2">
                     <div className="card-body p-2">

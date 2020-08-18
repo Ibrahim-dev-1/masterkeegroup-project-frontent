@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import ImageInfo from '../component/ImageInfo';
 import VideoInfo from '../component/VideoInfo';
+import OtherInfo from '../component/otherInfo';
 
 const PrivateFiles = (props) => {
     const linkId = useParams();
@@ -39,13 +40,14 @@ const PrivateFiles = (props) => {
             if(link.type === "musics"){
                 return console.log("ce fichier est de type musique");
             }
+            return <OtherInfo files={link.files} />;
         }
 
         return <h4 className="font-weight-bold text-center text-danger"> Ce fichier n'exist plus !</h4>
        
     }
 
-    return <div className="container">
+    return <div style={{ margin:" 0 auto", padding: "2rem", borderLeft: "1px solid #ccc", borderRight: "1px solid #ccc", maxWidth: "60rem" }}>
                 { displaysInfo() }
         </div>
 }
