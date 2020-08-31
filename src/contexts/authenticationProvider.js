@@ -9,9 +9,9 @@ let AuthDispatchContext = createContext();
 const rootReducer = (state, action) => {
     switch (action.type) {
         case "LOGIN_SUCCESS":
-            return { ...state, isAuthentication: action.payload.success, token: action.payload.token };
+            return { ...state, isAuthentication: action.payload.success, email: action.payload.email, token: action.payload.token };
         case "LOGOUT":
-            return { ...state, isAuthentication: false, token: undefined };
+            return { ...state, isAuthentication: false, token: undefined, email: undefined };
         default:
             return state;
     }
@@ -23,6 +23,7 @@ const AuthenticationProvider = (props) => {
     const [authState, dispatch] = useReducer(rootReducer, {
         isAuthentication: false,
         token: undefined,
+        email: undefined,
         isLoading: false,
     });
 
@@ -93,6 +94,7 @@ const logout = (dispatch) => {
 export {
     AuthenticationProvider,
     login,
+    logout,
     useAuthState,
     useAuthDispatch,
 }

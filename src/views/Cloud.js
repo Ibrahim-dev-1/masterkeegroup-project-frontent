@@ -23,7 +23,7 @@ function Cloud(props) {
 
                   <div className="row">
                         <div className="col-md-3 text-center">
-                              <img className="img-circle" height="20px" width="20px" src={Profil} />
+                              <img className="img-circle" height="100px" width="100px" src={Profil} />
                               <h4 className="font-weight-bold">{sessionStorage.getItem("email")}</h4>
                         </div>
                         <div className="col-md-6 p-2">
@@ -32,11 +32,11 @@ function Cloud(props) {
                                     <Route path="/dashboard/admin/cloud/:foldName" component={FileInfo} />
                               </Switch>
                         </div>
-                        <div style={{ maxHeight: "5rem" }} className="border rounded p-3 col-md-3 text-center">
+                        <div style={{ maxHeight: "16rem" }} className="border bg-light rounded p-3 col-md-3 text-center">
                               <h4 className="font-weight-bold text-center">Uploadez les Fichiers</h4>
                               <p className="text-muted">Vous pouvez uploadez plusieurs types de fichiers(
                         <span className="text-primary">les musiques , images, les videos , les pdf etc...</span>)
-                                                                                                                                                                                                      avec cette plateforme.
+                                                                                                                                                                                                                  avec cette plateforme.
                         </p>
                               <p className="font-weight-bold">Comment uploadez ? cliquez sur le boutton upload un fichier </p>
                               <button data-target="#kratosModal"
