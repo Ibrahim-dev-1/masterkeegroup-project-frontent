@@ -19,10 +19,6 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 export default function(props) {
     const filesPondRef = React.createRef();
 
-const handleInit = () => {
-   console.log("Initialisation de filepond ")
-}
-
 return (
     <div className="modal fade" data-show="false" data-keyboard="true" data-backdrop="static" id="kratosModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div className="modal-dialog modal-dialog-centered" role="document">
@@ -45,15 +41,10 @@ return (
                        process:{
                            url: '/upload',
                            method: 'POST',
-                           headers:{ 'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
                        }
 
                     }}
 
-                    oninit={() => handleInit()}
-                    onupdatefiles={fileItems => {
-                        console.log("update...")
-                    }}
                 />
             </form>
         </div>

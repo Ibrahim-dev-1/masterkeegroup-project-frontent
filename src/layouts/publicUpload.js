@@ -19,22 +19,17 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 // upload css file for publicUpload
 
 export default function(prop) {
-    const filesPondRef = React.createRef();
-
+    const filesPondRef = React.useRef();
 
 return (
     
-    <div className="d-flex">
-                <div className="kratos-upload-first">
-                    <h3 className="display-5 text-center text-light">Bienvenu à <span className="display-4 text-warning">Masterkee <span style={{color:"#b3f9fc"}} className="display-4">Cloud </span></span></h3>
+    <div className="kratos-upload">
+                    <h2 className="display-4 text-center text-light">Bienvenu à <span className="display-3 text-warning">Masterkee <span style={{color:"#b3f9fc"}} className="display-3">Cloud </span></span></h2>
                     <div className="kratosText">
                         <h5>Envoyé tous vos fichiers de façons rapide graçe à cette plateform de transfert de fichiers masterkee cloud</h5>
                         <h5>Vous pouvez envoyé de fichiers pesant plus de 10 Gb via cette plateform.</h5>
                     </div>
-                </div>
-                <div className="kratos-form-container">
-                    <h3 className="text-primary text-center"> Uploadé un fichiers</h3>
-                    <form className="kratos-form" id="kratosFile" encType="multipart/form-data">
+                    <form className="kratos-container" encType="multipart/form-data">
                         {/* Pass FilePond properties as attributes */}
                         <FilePond
                             ref = {filesPondRef }
@@ -53,6 +48,5 @@ return (
                             }}
                         />
                     </form>
-                </div>
-            </div>
+        </div>
 )}
